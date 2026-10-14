@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA X - Future Cyber Platform</title>
+    <!-- Google Font & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- JSZip for dynamic bundling -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #050a14;
+            --card-bg: rgba(10, 20, 38, 0.7);
+            --border-cyan: #00f0ff;
+            --text-glow: #00f0ff;
+            --cyan-shadow: rgba(0, 240, 255, 0.4);
+            --btn-bg: rgba(0, 240, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 50% 10%, rgba(0, 240, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 100, 255, 0.1) 0%, transparent 40%);
+        }
+
+        header {
+            margin: 30px 0 40px 0;
+            text-align: center;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 4px;
+            text-shadow: 
+                0 0 10px var(--text-glow),
+                0 0 20px var(--text-glow),
+                0 0 40px var(--text-glow);
+            text-transform: uppercase;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-cyan);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: 0 0 25px var(--cyan-shadow);
+        }
+
+        .card-tag {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--border-cyan);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            color: #a0aec0;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn-glow {
+            display: inline-block;
+            width: 100%;
+            padding: 12px 0;
+            border: 1.5px solid var(--border-cyan);
+            border-radius: 8px;
+            background: var(--btn-bg);
+            color: var(--border-cyan);
+            font-family: 'Orbitron', 'Hind Siliguri', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
+        }
+
+        .btn-glow:hover {
+            background: var(--border-cyan);
+            color: #000;
+            box-shadow: 0 0 20px var(--border-cyan);
+        }
+
+        /* Hidden Form Area with Animation */
+        .apk-builder-box {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed rgba(0, 240, 255, 0.3);
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: #cbd5e0;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background: rgba(5, 10, 20, 0.8);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--border-cyan);
+            box-shadow: 0 0 8px var(--cyan-shadow);
+        }
+
+        input[type="file"]::file-selector-button {
+            background: rgba(0, 240, 255, 0.2);
+            border: 1px solid var(--border-cyan);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .status-msg {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            text-align: center;
+            color: var(--border-cyan);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo">AURA X</div>
+    </header>
+
+    <!-- Main Content Container -->
+    <div class="container">
+
+        <!-- 1. Free Website Card -->
+        <div class="card">
+            <span class="card-tag">FREE WEBSITE</span>
+            <div class="card-title">Free Website</div>
+            <div class="card-desc">আপনার ফ্রি ওয়েবসাইট তৈরি ও ম্যানেজ করুন খুব সহজে।</div>
+            <button class="btn-glow" onclick="alert('ফ্রি ওয়েবসাইট সার্ভিস শীঘ্রই আসছে!')">VIEW</button>
+        </div>
+
+        <!-- 2. APK Building Card -->
+        <div class="card">
+            <span class="card-tag">APK</span>
+            <div class="card-title">APK Building</div>
+            <div class="card-desc">Build and manage Android APK projects.</div>
+            
+            <!-- View Toggle Button -->
+            <button class="btn-glow" id="toggleBtn" onclick="toggleApkBuilder()">VIEW</button>
+
+            <!-- Hidden Input Form Area -->
+            <div class="apk-builder-box" id="apkBuilderBox">
+                <form id="apkForm" onsubmit="generateApkPackage(event)">
+                    <div class="form-group">
+                        <label for="appName"><i class="fa-solid fa-mobile-screen"></i> অ্যাপের নাম (App Name):</label>
+                        <input type="text" id="appName" class="form-control" placeholder="যেমন: My App" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="appIcon"><i class="fa-solid fa-image"></i> অ্যাপের ছবি/আইকন (App Icon):</label>
+                        <input type="file" id="appIcon" class="form-control" accept="image/*" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="htmlFile"><i class="fa-solid fa-code"></i> HTML ফাইল আপলোড (HTML File):</label>
+                        <input type="file" id="htmlFile" class="form-control" accept=".html" required>
+                    </div>
+
+                    <!-- APK Building Action Button -->
+                    <button type="submit" class="btn-glow" style="margin-top: 10px;">
+                        <i class="fa-solid fa-gears"></i> APK Building
+                    </button>
+                </form>
+
+                <div id="statusMsg" class="status-msg"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script Handling -->
+    <script>
+        // Toggle APK Builder Section
+        function toggleApkBuilder() {
+            const builderBox = document.getElementById('apkBuilderBox');
+            const toggleBtn = document.getElementById('toggleBtn');
+
+            if (builderBox.style.display === 'block') {
+                builderBox.style.display = 'none';
+                toggleBtn.innerText = 'VIEW';
+            } else {
+                builderBox.style.display = 'block';
+                toggleBtn.innerText = 'CLOSE';
+            }
+        }
+
+        // APK Building Package Generation
+        async function generateApkPackage(event) {
+            event.preventDefault();
+
+            const appName = document.getElementById('appName').value.trim();
+            const iconFileInput = document.getElementById('appIcon').files[0];
+            const htmlFileInput = document.getElementById('htmlFile').files[0];
+            const statusMsg = document.getElementById('statusMsg');
+
+            if (!appName || !iconFileInput || !htmlFileInput) {
+                alert('অনুগ্রহ করে সকল তথ্য প্রদান করুন!');
+                return;
+            }
+
+            statusMsg.style.display = 'block';
+            statusMsg.innerText = 'প্রসেসিং হচ্ছে... অনুগ্রহ করে অপেক্ষা করুন...';
+
+            try {
+                const zip = new JSZip();
+
+                // Read HTML File content
+                const htmlContent = await htmlFileInput.text();
+                zip.file("www/index.html", htmlContent);
+
+                // Read Icon File content
+                const iconArrayBuffer = await iconFileInput.arrayBuffer();
+                zip.file("www/icon.png", iconArrayBuffer);
+
+                // Config Metadata
+                const configXml = `<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.aurax.${appName.toLowerCase().replace(/\s+/g, '')}" version="1.0.0" xmlns="http://www.w3.org/ns/widgets">
+    <name>${appName}</name>
+    <description>App created via AURA X Builder</description>
+    <content src="index.html" />
+    <icon src="icon.png" />
+</widget>`;
+                zip.file("www/config.xml", configXml);
+
+                // Download ZIP File
+                const content = await zip.generateAsync({ type: "blob" });
+                const downloadLink = document.createElement('a');
+                downloadLink.href = URL.createObjectURL(content);
+                downloadLink.download = `${appName.replace(/\s+/g, '_')}_AuraX_Project.zip`;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+
+                statusMsg.innerText = '✅ প্রজেক্ট জিপ ফাইল সফলভাবে তৈরি ও ডাউনলোড হয়েছে!';
+            } catch (error) {
+                console.error(error);
+                statusMsg.innerText = '❌ কোনো সমস্যা হয়েছে, পুনরায় চেষ্টা করুন।';
+            }
+        }
+    </script>
+</body>
+</html>
